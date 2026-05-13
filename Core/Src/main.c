@@ -100,7 +100,7 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   
-  // Flash memory'den elde ettiginiz deger 7'den buyukse (veya bos olan 0xFFFFFFFF ise) [cite: 48]
+  
   uint32_t flash_val = Read_Blink_Count_From_Flash();
 
   if (flash_val == 0xFFFFFFFF || flash_val > 7) {
@@ -110,7 +110,7 @@ int main(void)
       blink_count = flash_val;
   }
 
-  // TIM2'yi kesme (interrupt) modunda baslat [cite: 36]
+  // TIM2'yi kesme (interrupt) modunda baslat 
   HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE END 2 */
 
@@ -125,7 +125,7 @@ int main(void)
               button_press_time = HAL_GetTick();
               long_press_handled = 0;
           } else {
-              // Buton en az 3 saniye basili tutulursa sistem fabrika ayarlarina donsun [cite: 50]
+              // Buton en az 3 saniye basili tutulursa sistem fabrika ayarlarina donsun 
               if (!long_press_handled && (HAL_GetTick() - button_press_time) >= 3000) {
                   blink_count = 4; // blink_count degeri 4 olsun [cite: 51]
                   Save_Blink_Count_To_Flash(blink_count);
@@ -139,9 +139,9 @@ int main(void)
               
               // 50ms debouncing ile kisa basim algilamasi
               if (press_duration > 50 && press_duration < 3000 && !long_press_handled) {
-                  blink_count++; // butona her basildiginda blink count degeri 1 artsin [cite: 43]
+                  blink_count++; // butona her basildiginda blink count degeri 1 artsin 
                   if (blink_count > 7) {
-                      blink_count = 4; // degeri 7 iken butona basilirsa blink count degeri 4 olsun [cite: 44]
+                      blink_count = 4; // degeri 7 iken butona basilirsa blink count degeri 4 olsun 
                   }
                   Save_Blink_Count_To_Flash(blink_count);
               }
@@ -200,7 +200,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim->Instance == TIM2) {
         if (is_waiting) {
-            // 5sn. sonuk dursun [cite: 40]
+            // 5sn. sonuk dursun 
             HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET); 
             wait_seconds++;
             if (wait_seconds >= 5) {
@@ -210,7 +210,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 led_state = 0;
             }
         } else {
-            // LED, blink_count degiskeninin degeri kadar 1'er saniye yanip sonsun [cite: 40]
+            // LED, blink_count degiskeninin degeri kadar 1'er saniye yanip sonsun 
             if (led_state == 0) {
                 HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET); 
                 led_state = 1;
